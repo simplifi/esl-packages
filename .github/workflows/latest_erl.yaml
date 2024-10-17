@@ -36,5 +36,4 @@ jobs:
 
       - id: upload-to-artifactory
         run: |
-          cd build
           curl -L -u${{ secrets.JFROG_USER }}:${{ secrets.JFROG_API_KEY }} -XPUT https://sifi.jfrog.io/artifactory/rpm-local/rockylinux/8/ -T build/rockylinux/8/*
