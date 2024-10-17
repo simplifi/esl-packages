@@ -12,8 +12,8 @@ jobs:
       matrix:
         cfg:
           #- { DISTRO_LATEST: "rockylinux_8", PLATFORM: "linux-amd64", RUNNER: "ubuntu-latest"}
-          - { DISTRO_LATEST: "rockylinux_8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64"}
-    runs-on: ${{ RUNNER }}
+          - { DISTRO_LATEST: "rockylinux_8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "24.3.4"}
+    runs-on: ${{ matrix.cfg.RUNNER }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,21 +24,17 @@ jobs:
 
       - name: Build the package
         env:
+          ERLANG_VERSION: ${{ matrix.cfg.ERLANG_VERSION }}
           GPG_PASS: ${{ secrets.GPG_PASS }}
-          ERLANG_VERSION: ${{ github.event.inputs.ERLANG_VERSION }}
-          JFROG_USER: ${{ secrets.JFROG_USER }}
-          JFROG_API_KEY: ${{ secrets.JFROG_API_KEY }}
         run: |
           echo "Building ..."
           echo "Distro latest ${{ matrix.cfg.DISTRO_LATEST }}"
           echo "Platform ${{ matrix.cfg.PLATFORM }}"
           echo "${{secrets.GPG_P_KEY}}" | tr ';' '\n' > GPG-KEY-pmanager
-          export GPG_PASS=${{secrets.GPG_PASS}}
-          export GPG_KEY_ID=${{secrets.GPG_KEY_ID}}
           make "erlang_${{ env.ERLANG_VERSION }}_${{matrix.cfg.DISTRO_LATEST}}_${{matrix.cfg.PLATFORM}}"
           find ./ -type f -name "GPG-KEY*" -delete
 
       - id: upload-to-artifactory
         run: |
           cd build
-          curl -L -u${{ env.JFROG_USER }}:${{ env.JFROG_API_KEY }} -XPUT https://sifi.jfrog.io/artifactory/rpm-local/rockylinux/8/ -T build/rockylinux/8/*
+          curl -L -u${{ secrets.JFROG_USER }}:${{ secrets.JFROG_API_KEY }} -XPUT https://sifi.jfrog.io/artifactory/rpm-local/rockylinux/8/ -T build/rockylinux/8/*
