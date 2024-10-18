@@ -40,4 +40,4 @@ jobs:
 
       - id: upload-to-artifactory
         run: |
-          curl -L -u${{ secrets.JFROG_USER }}:${{ secrets.JFROG_API_KEY }} -XPUT https://sifi.jfrog.io/artifactory/rpm-local/${{ matrix.cfg.DISTRO }}/${{ matrix.cfg.OS_VERSION }}/ -T build/${{ matrix.cfg.DISTRO }}/{{ matrix.cfg.OS_VERSION }}/*
+          curl -L -u${{ secrets.JFROG_USER }}:${{ secrets.JFROG_API_KEY }} -XPUT https://sifi.jfrog.io/artifactory/rpm-local/${{ matrix.cfg.DISTRO }}/${{ matrix.cfg.OS_VERSION }}/ -T build/${{ matrix.cfg.DISTRO }}/${{ matrix.cfg.OS_VERSION }}/*
