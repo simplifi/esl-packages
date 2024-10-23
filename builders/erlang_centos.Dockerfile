@@ -87,7 +87,7 @@ RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=priv
   # fpm 1.12 requires ruby 2.3.8
   rbenv install 2.3.8; \
   rbenv global 2.3.8; \
-  gem install bundler; \
+  gem install bundler -v '~>2'; \
   gem install git --no-document --version 1.7.0; \
   gem install fpm --no-document --version 1.12.0; \
   else \
