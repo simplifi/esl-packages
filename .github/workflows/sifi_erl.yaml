@@ -14,6 +14,9 @@ jobs:
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "26.1.2"}
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "25.3.2"}
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "24.3.4"}
+          - { DISTRO: "centos", OS_VERSION: "7", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "26.1.2"}
+          - { DISTRO: "centos", OS_VERSION: "7", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "25.3.2"}
+          - { DISTRO: "centos", OS_VERSION: "7", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "24.3.4"}
     runs-on: ${{ matrix.cfg.RUNNER }}
     steps:
       - name: Checkout
