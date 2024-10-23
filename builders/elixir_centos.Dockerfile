@@ -6,15 +6,6 @@ ARG os
 ARG os_version
 ADD yumdnf /usr/local/bin/
 
-# Fix centos 7 mirrors
-RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
-  --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \
-  if [ "${os}:${os_version}" = "centos:7" ]; then \
-    sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo \
-    && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo \
-    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo; \
-  fi
-
 # Fix centos 8 mirrors
 RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
   --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \

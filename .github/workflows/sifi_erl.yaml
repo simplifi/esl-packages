@@ -32,7 +32,7 @@ jobs:
           GPG_PASS: ${{ secrets.GPG_PASS }}
         run: |
           echo "Building ..."
-          echo "Distro latest ${{ matrix.cfg.DISTRO }} ${{ matrix.cfg.OS_VERSION }}"
+          echo "Distro ${{ matrix.cfg.DISTRO }} ${{ matrix.cfg.OS_VERSION }}"
           echo "Platform ${{ matrix.cfg.PLATFORM }}"
           echo "${{secrets.GPG_P_KEY}}" | tr ';' '\n' > GPG-KEY-pmanager
           make "erlang_${{ env.ERLANG_VERSION }}_${{matrix.cfg.DISTRO}}_${{matrix.cfg.OS_VERSION}}_${{matrix.cfg.PLATFORM}}"
