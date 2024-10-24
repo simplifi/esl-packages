@@ -8,6 +8,15 @@ ARG os
 ARG os_version
 ADD yumdnf /usr/local/bin/
 
+# Fix centos 7 mirrors
+RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
+  --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \
+  if [ "${os}:${os_version}" = "centos:7" ]; then \
+    sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo; \
+  fi
+
 # Fix centos 8 mirrors
 RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
   --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \
@@ -78,8 +87,9 @@ RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=priv
   # fpm 1.12 requires ruby 2.3.8
   rbenv install 2.3.8; \
   rbenv global 2.3.8; \
-  gem install bundler; \
+  gem install bundler -v '< 2.3'; \
   gem install git --no-document --version 1.7.0; \
+  gem install dotenv --version 2.8.1; \
   gem install fpm --no-document --version 1.12.0; \
   else \
   # fpm 1.13 requires ruby 3.0.1.
@@ -180,7 +190,16 @@ WORKDIR /tmp/output
 COPY --from=builder /tmp/output .
 ADD yumdnf /usr/local/bin/
 
-# Fix centos 8 mirrors
+# Fix centos 7 mirrors
+RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
+  --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \
+  if [ "${os}:${os_version}" = "centos:7" ]; then \
+    sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo; \
+  fi
+
+  # Fix centos 8 mirrors
 RUN --mount=type=cache,id=${os}_${os_version},target=/var/cache/dnf,sharing=private \
   --mount=type=cache,id=${os}_${os_version},target=/var/cache/yum,sharing=private \
   if [ "${os}:${os_version}" = "centos:8" ]; then \
