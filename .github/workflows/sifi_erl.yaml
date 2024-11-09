@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         cfg:
+          - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "27.1.2"}
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "26.1.2"}
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "25.3.2"}
           - { DISTRO: "rockylinux", OS_VERSION: "8", PLATFORM: "linux-arm64", RUNNER: "ubuntu-22.04-arm64", ERLANG_VERSION: "24.3.4"}
